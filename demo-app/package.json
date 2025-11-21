@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "vue": "^3.3.0",
-    "@umoteam/editor": "file:../umo-editor-source"
+    "@umoteam/editor": "latest"
   },
   "devDependencies": {
     "vite": "^4.0.0",
