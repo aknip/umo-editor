@@ -1,3 +1,15 @@
+
+
+
+Folder "demo-app":
+The current version has a dependency  "@umoteam/editor"
+The source code of this dependendy is in folder "umo-editor-source"
+Your task: Change the dependency to the local source files
+
+
+
+
+
 create a simple demo application which shows the UMO editor (in english language).
 
 npm install --save @umoteam/editor
