@@ -1,0 +1,29 @@
+{
+  "headers": [
+    {
+      "source": "/*",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/cn/docs/next/license",
+      "destination": "/cn/docs/license",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/docs/next/license",
+      "destination": "/en/docs/license",
+      "statusCode": 301
+    }
+  ]
+}

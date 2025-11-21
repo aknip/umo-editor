@@ -1,0 +1,227 @@
+import { Tabs } from 'nextra/components'
+
+# Method Configuration
+
+This section is used to configure methods for Umo Editor, including document saving, file upload, file deletion, AI document assistant response handling, and more.
+
+## Default Methods
+
+```js
+{
+  async onSave(content, page, document) {
+    throw new Error('Key "onSave": Please set the save method')
+  },
+  async onFileUpload(file) {
+    if (!file) throw new Error('File not found')
+    throw new Error('Key "onFileUpload": Please set the upload method')
+  },
+  onFileDelete(id, url) {
+    console.error('The file has been deleted. Please configure the onFileDelete to completely delete the file from the server.')
+  },
+}
+```
+
+## Configuration Details
+
+### onSave
+
+**Description**:  
+Configures the document saving method. When the user saves a document, this method will be called to save it to the server.
+
+**Type**: `AsyncFunction`, `Promise`
+
+**Parameters**:
+
+- `content`: The content of the document.
+- `page`: Page information.
+- `document`: Document metadata.
+
+**Return Value**:  
+Return `true` if the save is successful, otherwise return `false` or throw an error.
+
+**Example**:
+
+The following example uses [Axios](https://axios-http.com/) to demonstrate how to configure the `onSave` method to save documents to the server:
+
+<Tabs items={['Global Configuration', 'SFC Configuration']}>
+<Tabs.Tab>
+```js
+import axios from 'axios'
+import { useUmoEditor } from '@umoteam/editor'
+
+const options = {
+  async onSave(content, page, document) {
+    const res = await axios.post('/api/save', {
+      content,
+      page,
+      document,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    return true;
+  },
+};
+
+app.use(useUmoEditor, options)
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```vue
+<template>
+  <umo-editor 
+    @save="onSave" 
+  />
+</template>
+ 
+<script setup>
+import { UmoEditor } from '@umoteam/editor'
+import axios from 'axios'
+
+const onSave = async (content, page, document) => {
+  const res = await axios.post('/api/save', {
+    content,
+    page,
+    document,
+  }, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+
+  return true;
+}
+</script>
+```
+</Tabs.Tab>
+</Tabs>
+
+### onFileUpload
+
+**Description**:  
+Configures the file upload method. This method is triggered when the user inserts a file, uploading it to the server.
+
+**Type**: `AsyncFunction`, `Promise`
+
+**Parameter**:
+
+- `file`: The `File` object to be uploaded.
+
+**Return Value**:
+
+- `id`: The file ID returned upon successful upload.
+- `url`: The file URL returned upon successful upload.
+
+**Example**:
+
+The following example uses [Axios](https://axios-http.com/) to demonstrate how to configure the `onFileUpload` method to upload files to the server:
+
+<Tabs items={['Global Configuration', 'SFC Configuration']}>
+<Tabs.Tab>
+```js
+import axios from 'axios'
+import { useUmoEditor } from '@umoteam/editor'
+
+const options = {
+  async onFileUpload(file) {
+    let formData = new FormData();
+    formData.append('file', file);
+    const res = await axios.post('/api/file-upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    });
+
+    return {
+      id: res.data.id,
+      url: res.data.url,
+    };
+  },
+};
+
+app.use(useUmoEditor, options)
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```vue
+<template>
+  <umo-editor 
+    @file-upload="onFileUpload" 
+  />
+</template>
+ 
+<script setup>
+import { UmoEditor } from '@umoteam/editor'
+import axios from 'axios'
+
+const onFileUpload = async (file) => {
+  let formData = new FormData();
+  formData.append('file', file);
+  const res = await axios.post('/api/file-upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  });
+
+  return {
+    id: res.data.id,
+    url: res.data.url,
+  };
+}
+</script>
+```
+</Tabs.Tab>
+</Tabs>
+
+### onFileDelete
+
+**Description**:  
+Configures the file deletion method. This method is triggered when a user deletes a file, removing it from the server.
+
+**Type**: `Function`
+
+**Parameters**:
+
+- `id`: File ID.
+- `url`: File URL.
+
+**Example**:
+
+The following example uses [Axios](https://axios-http.com/) to demonstrate how to configure the `onFileDelete` method to delete files from the server:
+
+<Tabs items={['Global Configuration', 'SFC Configuration']}>
+<Tabs.Tab>
+```js
+import axios from 'axios'
+import { useUmoEditor } from '@umoteam/editor'
+
+const options = {
+  onFileDelete(id, url) {
+    axios.delete(`/api/file/${id}`);
+  },
+};
+
+app.use(useUmoEditor, options)
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```vue
+<template>
+  <umo-editor 
+    @file-delete="onFileDelete" 
+  />
+</template>
+ 
+<script setup>
+import { UmoEditor } from '@umoteam/editor'
+import axios from 'axios'
+
+const onFileDelete = (id, url) => {
+  axios.delete(`/api/file/${id}`);
+}
+</script>
+```
+</Tabs.Tab>
+</Tabs>
