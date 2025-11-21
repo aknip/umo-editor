@@ -25,7 +25,7 @@ node_modules/
 jspm_packages/
 
 # Index files
-kilo-qdrant-index/qdrant_storage/
+qdrant_storage/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
